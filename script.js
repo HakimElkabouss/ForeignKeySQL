@@ -23,11 +23,13 @@ db.serialize( () => {
         db.run('INSERT INTO personnes (personnes_name, vehicles_id) VALUES (?, ?)','Yvane',1);
         db.run('INSERT INTO personnes (personnes_name, vehicles_id) VALUES (?, ?)','Theophile',2);
         db.run('INSERT INTO personnes (personnes_name, vehicles_id) VALUES (?, ?)','Wiliam',4);
+        db.run('INSERT INTO personnes (personnes_name, vehicles_id) VALUES (?, ?)','Ali',3);
 
         db.run('CREATE TABLE groupes (groupes_id INTEGER PRIMARY KEY AUTOINCREMENT, vehicles_id INTEGER, personnes_id INTEGER, FOREIGN KEY(vehicles_id) REFERENCES vehicles(id), FOREIGN KEY(personnes_id) REFERENCES personnes(id))');
-        // db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',1,1);
+        db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',1,1);
         db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',2,2);
         db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',4,3);
+        db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',3,4);
 
 
         
