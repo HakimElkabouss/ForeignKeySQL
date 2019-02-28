@@ -18,18 +18,25 @@ db.serialize( () => {
         db.run('INSERT INTO vehicles (vehicles_name) VALUES (?)','Ford');
         db.run('INSERT INTO vehicles (vehicles_name) VALUES (?)','BMW');
 
+        db.run('CREATE TABLE groupes (groupes_id INTEGER PRIMARY KEY AUTOINCREMENT, groupes_name TEXT UNIQUE)');
+        db.run('INSERT INTO groupes (groupes_name) VALUES (?)','A');
+        db.run('INSERT INTO groupes (groupes_name) VALUES (?)','B');
+        db.run('INSERT INTO groupes (groupes_name) VALUES (?)','C');
+        db.run('INSERT INTO groupes (groupes_name) VALUES (?)','D');
 
-        db.run('CREATE TABLE personnes (personnes_id INTEGER PRIMARY KEY AUTOINCREMENT, personnes_name TEXT UNIQUE, vehicles_id INTEGER, FOREIGN KEY(vehicles_id) REFERENCES vehicles(id))');
-        db.run('INSERT INTO personnes (personnes_name, vehicles_id) VALUES (?, ?)','Yvane',1);
-        db.run('INSERT INTO personnes (personnes_name, vehicles_id) VALUES (?, ?)','Theophile',2);
-        db.run('INSERT INTO personnes (personnes_name, vehicles_id) VALUES (?, ?)','Wiliam',4);
-        db.run('INSERT INTO personnes (personnes_name, vehicles_id) VALUES (?, ?)','Ali',3);
 
-        db.run('CREATE TABLE groupes (groupes_id INTEGER PRIMARY KEY AUTOINCREMENT, vehicles_id INTEGER, personnes_id INTEGER, FOREIGN KEY(vehicles_id) REFERENCES vehicles(id), FOREIGN KEY(personnes_id) REFERENCES personnes(id))');
-        db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',1,1);
-        db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',2,2);
-        db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',4,3);
-        db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',3,4);
+
+        db.run('CREATE TABLE personnes (personnes_id INTEGER PRIMARY KEY AUTOINCREMENT, personnes_name TEXT UNIQUE, vehicles_id INTEGER, groupes_id INTEGER, FOREIGN KEY(vehicles_id) REFERENCES vehicles(id), FOREIGN KEY(groupes_id) REFERENCES groupes(id))');
+        db.run('INSERT INTO personnes (personnes_name, vehicles_id, groupes_id) VALUES (?, ?, ?)','Yvane',1,2);
+        db.run('INSERT INTO personnes (personnes_name, vehicles_id, groupes_id) VALUES (?, ?, ?)','Theophile',2,2);
+        db.run('INSERT INTO personnes (personnes_name, vehicles_id, groupes_id) VALUES (?, ?, ?)','Wiliam',4,4);
+        db.run('INSERT INTO personnes (personnes_name, vehicles_id, groupes_id) VALUES (?, ?, ?)','Ali',3,3);
+
+        // db.run('CREATE TABLE groupes (groupes_id INTEGER PRIMARY KEY AUTOINCREMENT, vehicles_id INTEGER, personnes_id INTEGER, FOREIGN KEY(vehicles_id) REFERENCES vehicles(id), FOREIGN KEY(personnes_id) REFERENCES personnes(id))');
+        // db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',1,1);
+        // db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',2,2);
+        // db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',4,3);
+        // db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',3,4);
 
 
         
