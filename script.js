@@ -12,25 +12,28 @@ const db = new sqlite3.Database(dbfile);
 
 db.serialize( () => {
     if (!fs.existsSync(dbfile)){
-        db.run('CREATE TABLE vehicles (vehicles_id INTEGER PRIMARY KEY AUTOINCREMENT, vehicles_name TEXT UNIQUE)');
-        db.run('INSERT INTO vehicles (vehicles_name) VALUES (?)','Mercedes');
-        db.run('INSERT INTO vehicles (vehicles_name) VALUES (?)','Audi');
-        db.run('INSERT INTO vehicles (vehicles_name) VALUES (?)','Ford');
-        db.run('INSERT INTO vehicles (vehicles_name) VALUES (?)','BMW');
+        db.run('CREATE TABLE vehicles (vehicles_id INTEGER PRIMARY KEY AUTOINCREMENT, vehicles TEXT UNIQUE)');
+        db.run('INSERT INTO vehicles (vehicles) VALUES (?)','Mercedes');
+        db.run('INSERT INTO vehicles (vehicles) VALUES (?)','Audi');
+        db.run('INSERT INTO vehicles (vehicles) VALUES (?)','Ford');
+        db.run('INSERT INTO vehicles (vehicles) VALUES (?)','BMW');
 
-        db.run('CREATE TABLE groupes (groupes_id INTEGER PRIMARY KEY AUTOINCREMENT, groupes_name TEXT UNIQUE)');
-        db.run('INSERT INTO groupes (groupes_name) VALUES (?)','A');
-        db.run('INSERT INTO groupes (groupes_name) VALUES (?)','B');
-        db.run('INSERT INTO groupes (groupes_name) VALUES (?)','C');
-        db.run('INSERT INTO groupes (groupes_name) VALUES (?)','D');
+        db.run('CREATE TABLE sexe (sexe_id INTEGER PRIMARY KEY AUTOINCREMENT, sexe TEXT UNIQUE)');
+        db.run('INSERT INTO sexe (sexe) VALUES (?)','Male');
+        db.run('INSERT INTO sexe (sexe) VALUES (?)','Female');
+        
 
+        db.run('CREATE TABLE personnes (personnes_id INTEGER PRIMARY KEY AUTOINCREMENT, personnes TEXT UNIQUE)');
+        db.run('INSERT INTO personnes (personnes) VALUES (?)','Yvane');
+        db.run('INSERT INTO personnes (personnes) VALUES (?)','Theophile');
+        db.run('INSERT INTO personnes (personnes) VALUES (?)','Wiliam');
+        db.run('INSERT INTO personnes (personnes) VALUES (?)','Sara');
 
-
-        db.run('CREATE TABLE personnes (personnes_id INTEGER PRIMARY KEY AUTOINCREMENT, personnes_name TEXT UNIQUE, vehicles_id INTEGER, groupes_id INTEGER, FOREIGN KEY(vehicles_id) REFERENCES vehicles(id), FOREIGN KEY(groupes_id) REFERENCES groupes(id))');
-        db.run('INSERT INTO personnes (personnes_name, vehicles_id, groupes_id) VALUES (?, ?, ?)','Yvane',1,2);
-        db.run('INSERT INTO personnes (personnes_name, vehicles_id, groupes_id) VALUES (?, ?, ?)','Theophile',2,2);
-        db.run('INSERT INTO personnes (personnes_name, vehicles_id, groupes_id) VALUES (?, ?, ?)','Wiliam',4,4);
-        db.run('INSERT INTO personnes (personnes_name, vehicles_id, groupes_id) VALUES (?, ?, ?)','Ali',3,3);
+        db.run('CREATE TABLE results (results_id INTEGER PRIMARY KEY AUTOINCREMENT, personnes_id INTEGER,  sexe_id INTEGER, vehicles_id INTEGER, FOREIGN KEY(personnes_id) REFERENCES personnes(id), FOREIGN KEY(sexe_id) REFERENCES sexe(id), FOREIGN KEY(vehicles_id) REFERENCES vehicles(id))');
+        db.run('INSERT INTO results (personnes_id, vehicles_id, sexe_id) VALUES (?, ?, ?)',1,1,1);
+        db.run('INSERT INTO results (personnes_id, vehicles_id, sexe_id) VALUES (?, ?, ?)',2,2,1);
+        db.run('INSERT INTO results (personnes_id, vehicles_id, sexe_id) VALUES (?, ?, ?)',3,4,1);
+        db.run('INSERT INTO results (personnes_id, vehicles_id, sexe_id) VALUES (?, ?, ?)',4,3,2);
 
         // db.run('CREATE TABLE groupes (groupes_id INTEGER PRIMARY KEY AUTOINCREMENT, vehicles_id INTEGER, personnes_id INTEGER, FOREIGN KEY(vehicles_id) REFERENCES vehicles(id), FOREIGN KEY(personnes_id) REFERENCES personnes(id))');
         // db.run('INSERT INTO groupes (vehicles_id, personnes_id) VALUES (?, ?)',1,1);
@@ -40,7 +43,7 @@ db.serialize( () => {
 
 
         
-db.all('SELECT * FROM groupes NATURAL JOIN vehicles NATURAL JOIN personnes', function(error, data){
+db.all('SELECT * FROM personnes NATURAL JOIN vehicles NATURAL JOIN sexe NATURAL JOIN results', function(error, data){
     if (!error) console.log(data);
         else console.log(error);
 });
@@ -49,7 +52,7 @@ db.all('SELECT * FROM groupes NATURAL JOIN vehicles NATURAL JOIN personnes', fun
 
 
  app.get('/',function (request, response){
-    db.all('SELECT * FROM vehicles NATURAL JOIN personnes NATURAL JOIN groupes', function (error, data){
+    db.all('SELECT * FROM personnes NATURAL JOIN vehicles NATURAL JOIN sexe NATURAL JOIN results', function (error, data){
          response.send(data);
      });
 });
