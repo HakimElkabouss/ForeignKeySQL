@@ -1,0 +1,1 @@
+SELECT * FROM personnes NATURAL JOIN vehicles NATURAL JOIN gender NATURAL JOIN pictures NATURAL JOIN results
